@@ -23,11 +23,15 @@ canMouseEat('down',  room2)   // false
 canMouseEat('right', room2)   // true
 canMouseEat('left',  room2)   // false
 
-export default function canMouseEat(direction, game) {
-  // ¡Gracias por jugar a AdventJS 2021! 🤗
+export default function canMouseEat(direction: String, game: Array) {
+// ¡Gracias por jugar a AdventJS 2021! 🤗
   // ¡Nos vemos el año que viene! 👋
   // Por favor, comparte en las redes qué te ha parecido! 🚀
+  
+  //primero encontrar el raton
   let objPosition = findMouse(game);
+  if(objPosition.row === null || objPosition.col === null) return false;
+
   let rowNewPosition = objPosition.row;
   let colNewPosition = objPosition.col;
   switch (direction) {
@@ -47,9 +51,11 @@ export default function canMouseEat(direction, game) {
       console.log(
         "Lo lamentamos, por no existe esa direccion " + direction + "."
       );
+      return false;
   }
   
-  return game[rowNewPosition][colNewPosition] !== undefined && game[rowNewPosition][colNewPosition] === "*";
+  return game[rowNewPosition][colNewPosition] !== undefined && 
+        game[rowNewPosition][colNewPosition] === "*";
 }
 
 export function findMouse(game) {
