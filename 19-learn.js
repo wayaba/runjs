@@ -1,18 +1,31 @@
 //https://adventjs.dev/challenges/19
 
-export default function learn(time, courses) {
+const courses2Skip = 1
+
+export default function learn(availableTime, courses) {
   // ¡No olvides compartir tu solución en redes!
-  let output = [];
-  let totalTime = 0;
-  courses.forEach((item, index) => {
-    courses.slice(index + 1).forEach((nextItem, nextIndex) => {
-      if (item + nextItem <= time && item + nextItem > totalTime) {
-        totalTime = item + nextItem;
-        output = [index, nextIndex + 1 + index];
+  let courses2Take = [];
+  let estimatedTime = 0;
+
+  courses.forEach((firstCourse, firstIndex) => {
+		const exceptCurrentCourse = courses.slice(firstIndex + courses2Skip)
+
+    exceptCurrentCourse.forEach((secondCourse, secondIndex) => {
+			const bothCoursesSum = firstCourse + secondCourse
+			const isSumInRangeTime = bothCoursesSum <= availableTime
+			const isSumCloserToAvailableTime = bothCoursesSum > estimatedTime
+
+      if (isSumInRangeTime && isSumCloserToAvailableTime) {
+				const secondCourseIndex = secondIndex + firstIndex + 1
+        estimatedTime = firstCourse + secondCourse;
+        courses2Take = [firstIndex, secondCourseIndex];
       }
     });
   });
-  return output.length ? output : null;
+
+	const isEnoughTime = courses2Take.length > 0
+
+  return isEnoughTime ? courses2Take : null;
 }
 
 learn(10, [2, 3, 8, 1, 4]); // [0, 2] -> con 10 horas disponibles lo mejor es que completemos los cursos en el índice 0 y 2.
